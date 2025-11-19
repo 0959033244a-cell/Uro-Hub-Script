@@ -1,1 +1,151 @@
+local C = game:GetService("CoreGui")
+local H = game:GetService("HttpService")
+local U = "WACK"
 
+local F = {
+    ["🏃 การเคลื่อนที่"] = {
+        {"fly", "https://github.com/0959033244a-cell/Fly/raw/36a2f0400940894853c9224ab4dd56f38c0f710b/Fly%20uro%20hub"},
+        {"Noclip", "https://github.com/0959033244a-cell/Noclip/raw/bb05e3eeb937d88233fd51c355e296f3f53f30d5/Noclip%20uro%20hub"},
+        {"Walk Speed", "https://github.com/0959033244a-cell/.-/raw/f38b2ea69c23e391396b3fc7c27e9d231ac66d0d/%E0%B8%AA"},
+    },
+    ["attack"] = {
+        {"Aimbot", "https://raw.githubusercontent.com/DanielHubll/DanielHubll/refs/heads/main/Aimbot%20Mobile"},
+    },
+    ["Play aids"] = {
+        {"Invisible", "https://pastebin.com/raw/3Rnd9rHf"},
+        {"D-Pad", "https://github.com/0959033244a-cell/WASD/raw/3cff02135c848a4dabfc0ff907367d6fe6ba1c70/WASD"},
+        -- FIX: เพิ่ม Chiplock เข้าไปในหมวด Play aids
+        {"Chiplock", "https://raw.githubusercontent.com/0959033244a-cell/Chiplock/972a071ce4a949783bf5441228bd3d4040fcc55a/Chiplock%20by%20Uro%20Hub"},
+    },
+    ["ESP"] = {
+        {"ESP Players", "https://raw.githubusercontent.com/0959033244a-cell/Esp/eab8ac0377a9460d67f86ecbfd81a8febd60fa78/esp"},
+    }
+}
+
+local MINIMIZED_HEIGHT = 25 
+local FULL_SIZE = UDim2.new(0, 250, 0, 350)
+local MIN_SIZE = UDim2.new(0, 250, 0, MINIMIZED_HEIGHT)
+local ACCENT_COLOR = Color3.fromRGB(70, 70, 70)
+
+local function R()
+    if C:FindFirstChild(U) then C[U]:Destroy() end
+
+    local G = Instance.new("ScreenGui", C)
+    G.Name = U
+    G.ResetOnSpawn = false
+    pcall(function() syn.protect_gui(G) end)
+
+    local M = Instance.new("Frame", G)
+    M.Name = "MainFrame"
+    M.Size = FULL_SIZE
+    M.Position = UDim2.new(0.5, -125, 0.5, -175)
+    M.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    M.Active, M.Draggable, M.ClipsDescendants, M.Visible = true, true, true, true
+    Instance.new("UICorner", M).CornerRadius = UDim.new(0, 6)
+
+    local L = Instance.new("ScrollingFrame", M)
+    L.Name = "FuncList"
+    L.BackgroundTransparency = 1
+    L.Size = UDim2.new(1, -10, 1, -35)
+    L.Position = UDim2.new(0, 5, 0, 30)
+    L.ScrollBarThickness = 3
+    
+    local Title = Instance.new("TextLabel", M)
+    Title.Size = UDim2.new(1, 0, 0, MINIMIZED_HEIGHT)
+    Title.BackgroundTransparency = 1
+    Title.Font = Enum.Font.GothamBold
+    Title.Text = "👑 Uro Hub 👑"
+    Title.TextSize = 15
+    Title.TextColor3 = Color3.fromRGB(200, 200, 50)
+    Title.TextXAlignment = Enum.TextXAlignment.Center 
+    Title.Position = UDim2.new(0, 0, 0, 0) 
+
+    local function toggleMinimize(btn1, btn2)
+        local isFullScreen = (M.Size == FULL_SIZE)
+        
+        if isFullScreen then
+            M.Size = MIN_SIZE
+            M.Position = UDim2.new(1, -250, 0, 0)
+            L.Visible = false
+            btn1.Text = "+"
+            btn2.Text = "+"
+        else
+            M.Size = FULL_SIZE
+            M.Position = UDim2.new(0.5, -125, 0.5, -175)
+            L.Visible = true
+            btn1.Text = "—"
+            btn2.Text = "—"
+        end
+    end
+
+    local MinMaxBtn = Instance.new("TextButton", M)
+    MinMaxBtn.Name = "MinMaxBtnTop"
+    MinMaxBtn.Size = UDim2.new(0, 25, 0, MINIMIZED_HEIGHT - 5)
+    MinMaxBtn.Position = UDim2.new(1, -30, 0, 2.5)
+    MinMaxBtn.BackgroundColor3 = ACCENT_COLOR
+    MinMaxBtn.Font = Enum.Font.GothamBold
+    MinMaxBtn.Text = "—"
+    MinMaxBtn.TextSize = 20
+    MinMaxBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Instance.new("UICorner", MinMaxBtn).CornerRadius = UDim.new(0, 4)
+
+    local MinMaxBtn2 = Instance.new("TextButton", M)
+    MinMaxBtn2.Name = "MinMaxBtnBottom"
+    MinMaxBtn2.Size = UDim2.new(0, 25, 0, MINIMIZED_HEIGHT - 5)
+    MinMaxBtn2.Position = UDim2.new(0, 5, 1, -27.5)
+    MinMaxBtn2.BackgroundColor3 = ACCENT_COLOR
+    MinMaxBtn2.Font = Enum.Font.GothamBold
+    MinMaxBtn2.Text = "—"
+    MinMaxBtn2.TextSize = 20
+    MinMaxBtn2.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Instance.new("UICorner", MinMaxBtn2).CornerRadius = UDim.new(0, 4)
+    
+    MinMaxBtn.MouseButton1Click:Connect(function() toggleMinimize(MinMaxBtn, MinMaxBtn2) end)
+    MinMaxBtn2.MouseButton1Click:Connect(function() toggleMinimize(MinMaxBtn, MinMaxBtn2) end)
+    
+    local Y = 0
+    local function B(name, url)
+        local btn = Instance.new("TextButton", L)
+        btn.Size = UDim2.new(1, -10, 0, 25)
+        btn.Position = UDim2.new(0, 5, 0, Y)
+        btn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+        btn.Text = name
+        btn.Font = Enum.Font.GothamBold
+        btn.TextSize = 12
+        btn.TextColor3 = Color3.fromRGB(240, 240, 240)
+        Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 4)
+
+        btn.MouseEnter:Connect(function() btn.BackgroundColor3 = Color3.fromRGB(70, 70, 70) end)
+        btn.MouseLeave:Connect(function() btn.BackgroundColor3 = Color3.fromRGB(50, 50, 50) end)
+        btn.MouseButton1Click:Connect(function()
+            loadstring(game:HttpGet(url))()
+        end)
+        Y += 28
+    end
+
+    for cat, scripts in pairs(F) do
+        local label = Instance.new("TextLabel", L)
+        label.Size = UDim2.new(1, -10, 0, 15)
+        label.Position = UDim2.new(0, 5, 0, Y)
+        label.BackgroundTransparency = 1
+        label.Font = Enum.Font.GothamBold
+        label.TextSize = 13
+        label.TextColor3 = Color3.fromRGB(180, 180, 50)
+        label.Text = cat
+        label.TextXAlignment = Enum.TextXAlignment.Left
+        Y += 20
+
+        for _, d in ipairs(scripts) do
+            B(d[1], d[2])
+        end
+    end
+    L.CanvasSize = UDim2.new(0, 0, 0, Y)
+end
+
+R()
+
+while task.wait(1) do
+    if not C:FindFirstChild(U) then
+        R()
+    end
+end
