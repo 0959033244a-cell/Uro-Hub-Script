@@ -3,7 +3,7 @@ local H = game:GetService("HttpService")
 local U = "WACK"
 
 local F = {
-    ["🏃 การเคลื่อนที่"] = {
+    ["Movement"] = {
         {"fly", "https://github.com/0959033244a-cell/Fly/raw/36a2f0400940894853c9224ab4dd56f38c0f710b/Fly%20uro%20hub"},
         {"Noclip", "https://github.com/0959033244a-cell/Noclip/raw/bb05e3eeb937d88233fd51c355e296f3f53f30d5/Noclip%20uro%20hub"},
         {"Walk Speed", "https://github.com/0959033244a-cell/.-/raw/f38b2ea69c23e391396b3fc7c27e9d231ac66d0d/%E0%B8%AA"},
